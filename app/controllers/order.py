@@ -2,13 +2,13 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from ..common.utils import check_required_keys
 from ..repositories.managers import (IngredientManager, OrderManager,
-                                     SizeManager)
+                                     SizeManager, BeverageManager)
 from .base import BaseController
 
 
 class OrderController(BaseController):
     manager = OrderManager
-    __required_info = ('client_name', 'client_dni', 'client_address', 'client_phone', 'size_id')
+    __required_info = ('client_name', 'client_dni', 'client_address', 'client_phone', 'size_id', 'beverage_id')
 
     @staticmethod
     def calculate_order_price(size_price: float, ingredients: list):
@@ -23,9 +23,13 @@ class OrderController(BaseController):
 
         size_id = current_order.get('size_id')
         size = SizeManager.get_by_id(size_id)
+        beverage_id = current_order.get('beverage_id')
+        size = BeverageManager.get_by_id(beverage_id)
+        
 
         if not size:
             return 'Invalid size for Order', None
+        
 
         ingredient_ids = current_order.pop('ingredients', [])
         try:
