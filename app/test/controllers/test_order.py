@@ -60,18 +60,32 @@ def test_create(app, ingredients, size, client_data, beverages):
 
 def test_calculate_order_price(app, ingredients, size, client_data, beverages):
     created_size, created_ingredients, created_beverages = __create_sizes_ingredients_and_beverages(ingredients, [size], beverages)
-    order = __order(created_ingredients, created_size, client_data, beverages)
+    order = __order(created_ingredients, created_size, client_data, created_beverages)
     created_order, _ = OrderController.create(order)
     ingredients_price = 0.0
     beverages_price = 0.0
+    price = 0.0
     for ingredient in created_ingredients:
         if ingredient is not None:
-            ingredients_price = ingredients_price + ingredient['price']
+            ingredients_price += ingredient['price']
+            print(ingredient['price'])
     for beverage in created_beverages:
         if beverage is not None:
-            beverages_price = beverages_price + beverage['price']
-
-    pytest.assume(created_order['total_price'] == round(created_size['price'] + ingredients_price + beverages_price, 2))
+            beverages_price += beverage['price']
+            print(beverage['price'])
+    expected_price = created_size['price'] + ingredients_price + beverages_price
+    price = round(expected_price, 2)
+    print("------------Created order----------")
+    print(created_order)
+    print("---------beverage-------")
+    print(beverages_price)
+    print("----------ingredients-----------")
+    print(ingredients_price)
+    print("-------------------price--------")
+    print(price)
+    print("----------------Order price ---------------")
+    print(created_order['total_price'])
+    pytest.assume(created_order['total_price'] ==  price )
 
 
 def test_get_by_id(app, ingredients, size, client_data, beverages):

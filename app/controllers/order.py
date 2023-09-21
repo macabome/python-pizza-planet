@@ -11,9 +11,12 @@ class OrderController(BaseController):
     __required_info = ('client_name', 'client_dni', 'client_address', 'client_phone', 'size_id')
 
     @staticmethod
-    def calculate_order_price(size_price: float, ingredients: list):
-        price = sum(ingredient.price for ingredient in ingredients)
+    def calculate_order_price(size_price: float, ingredients: list, beverages: list):
+        ingredient_price = sum(ingredient.price for ingredient in ingredients)
+        beverage_price = sum(beverage.price for beverage in beverages)
+        price = ingredient_price + beverage_price + size_price
         return round(price, 2)
+
 
     @classmethod
     def create(cls, order: dict):
@@ -35,7 +38,7 @@ class OrderController(BaseController):
         try:
             beverages = BeverageManager.get_by_id_list(beverage_ids)
             ingredients = IngredientManager.get_by_id_list(ingredient_ids)
-            price = cls.calculate_order_price(size.get('price'), ingredients)
+            price = cls.calculate_order_price(size.get('price'), ingredients, beverages)
             order_with_price = {**current_order, 'total_price': price}
             return cls.manager.create(order_with_price, ingredients, beverages), None
         except (SQLAlchemyError, RuntimeError) as ex:
