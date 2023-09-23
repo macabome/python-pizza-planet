@@ -68,23 +68,11 @@ def test_calculate_order_price(app, ingredients, size, client_data, beverages):
     for ingredient in created_ingredients:
         if ingredient is not None:
             ingredients_price += ingredient['price']
-            print(ingredient['price'])
     for beverage in created_beverages:
         if beverage is not None:
             beverages_price += beverage['price']
-            print(beverage['price'])
     expected_price = created_size['price'] + ingredients_price + beverages_price
     price = round(expected_price, 2)
-    print("------------Created order----------")
-    print(created_order)
-    print("---------beverage-------")
-    print(beverages_price)
-    print("----------ingredients-----------")
-    print(ingredients_price)
-    print("-------------------price--------")
-    print(price)
-    print("----------------Order price ---------------")
-    print(created_order['total_price'])
     pytest.assume(created_order['total_price'] ==  price )
 
 

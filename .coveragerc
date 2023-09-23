@@ -1,0 +1,9 @@
+[run]
+source = 
+    .
+omit =
+    app/test/*
+    */__init__.py
+    manage.py
+[report]
+fail_under = 90
