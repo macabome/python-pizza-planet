@@ -6,9 +6,12 @@ from ..controllers import ReportController
 report = Blueprint('report', __name__)
 
 
-@report.route('/', methods=GET)
+@report.route('/', methods=['GET'])
 def get_report():
     order, ingredient, most_revenue, error = ReportController.get_all_orders()
-    response = order, ingredient, most_revenue if not error else {'error': error}
-    status_code = 200 if order else 404 if not error else 400
-    return jsonify(response), status_code
+    if error:
+        response = {'error': error}
+        return jsonify(response), 400
+    response = {'order': order, 'most_revenue': most_revenue, 'ingredient': ingredient}
+    return jsonify(response), 200
+

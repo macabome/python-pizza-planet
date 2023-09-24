@@ -61,23 +61,23 @@ class ReportController(BaseController):
                 monthly_revenue[month] += revenue
 
         max_month = max(monthly_revenue, key=monthly_revenue.get)
-        highest_revenue = monthly_revenue[max_month]
-        return max_month, highest_revenue
+        return max_month
 
     
     @classmethod
     def get_all_orders(cls):
         try:
-            report = OrderManager.get_all()  # Assuming this function returns the report
-            error = None  # Initialize error as None, assuming no error occurred
+            report = OrderManager.get_all()  
+            error = None 
         
         except (SQLAlchemyError, RuntimeError) as ex:
-            report = None  # Set report as None in case of an error
-            error = str(ex)  # Store the error message as a string
+            report = None  
+            error = str(ex) 
 
         order = cls.find_top_costumers(report)
         ingredient = cls.find_top_ingredient(report)
         most_revenue = cls.get_most_revenue_month(report)
-        return order, ingredient, most_revenue, error  # Return both report and error as a tuple
+        print(order)
+        return order,ingredient, most_revenue, error 
 
 
