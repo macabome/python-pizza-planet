@@ -6,16 +6,16 @@ from ..utils.functions import (shuffle_list, get_random_sequence,
 
 def client_data_mock() -> dict:
     return {
-        'client_address': get_random_string(),
-        'client_dni': get_random_sequence(),
         'client_name': get_random_string(),
+        'client_dni': get_random_sequence(),
+        'client_address': get_random_string(),
         'client_phone': get_random_sequence()
     }
 
 
 @pytest.fixture
 def order_uri():
-    return '/order'
+    return '/order/'
 
 
 @pytest.fixture
@@ -24,15 +24,22 @@ def client_data():
 
 
 @pytest.fixture
-def order(create_ingredients, create_size, client_data) -> dict:
+def order(create_ingredients, create_size, client, order_uri) -> dict:
+    size = create_size.json
     ingredients = [ingredient.get('_id') for ingredient in create_ingredients]
-    size_id = create_size.get('_id')
-    return {
+    size_id = size.get('_id')
+    response = {
         **client_data_mock(),
         'ingredients': ingredients,
         'size_id': size_id
     }
+    return response
 
+@pytest.fixture
+def create_order(client, order, order_uri) -> dict:
+    response = client.post(order_uri, json=order)
+    return response
+    
 
 @pytest.fixture
 def create_orders(client, order_uri, create_ingredients, create_sizes) -> list:
@@ -45,5 +52,5 @@ def create_orders(client, order_uri, create_ingredients, create_sizes) -> list:
             'ingredients': shuffle_list(ingredients)[:5],
             'size_id': shuffle_list(sizes)[0]
         })
-        orders.append(new_order)
+        orders.append(new_order.json)
     return orders
