@@ -18,7 +18,6 @@ def date_random():
     return random_date
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_DIR)
 
 app = Flask(__name__)
 manager = FlaskGroup(app)
@@ -37,7 +36,6 @@ clients_name= ["John Connor", "Sara Connor", "Joe Smith", "Doe Johnson", "Terry 
 
 
 with app.app_context():
-    print("Ingreso aca.")
     for ingredient_name in ingredients:
         response= Ingredient.query.all()
         create_ingredient = Ingredient(name=ingredient_name, price=get_random_price(3, 10))
