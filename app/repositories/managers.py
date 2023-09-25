@@ -80,9 +80,23 @@ class OrderManager(BaseManager):
         return cls.serializer().dump(new_order)
 
     @classmethod
-    def update(cls):
-        raise NotImplementedError(f'Method not suported for {cls.__name__}')
+    def update_status(cls, _id: Any, status):
+        cls.session.query(cls.model).filter_by(_id=_id).update(order_status=status)
+        cls.session.commit()
+        return cls.get_by_id(_id)
+    
 
+class ReportManager(BaseManager):
+    model: Optional[db.Model] = None
+    serializer: Optional[ma.SQLAlchemyAutoSchema] = None
+    session = db.session
+
+    @classmethod
+    def get_all(cls):
+        serializer = cls.serializer(many=True)
+        _objects = cls.model.query.all()
+        result = serializer.dump(_objects)
+        return result
 
 class IndexManager(BaseManager):
 

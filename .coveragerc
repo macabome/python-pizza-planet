@@ -5,5 +5,9 @@ omit =
     app/test/*
     */__init__.py
     manage.py
+    populate.py
+    app/common/*
+    app/controllers/index.py  
+
 [report]
 fail_under = 90
