@@ -1,11 +1,9 @@
-# test_report_controller.py
 
-from app.controllers import ReportController  # Import the ReportController class
+from app.controllers import ReportController  
 import pytest
 
-# Define test cases
+
 def test_find_top_costumers():
-    # Create test data
     report = [
         {"_id": 1, "client_dni": "123"},
         {"_id": 2, "client_dni": "123"},
