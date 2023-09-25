@@ -36,21 +36,13 @@ class OrderController(BaseController):
 
         ingredient_ids = current_order.pop('ingredients', [])
         beverage_ids = current_order.pop('beverages', [])
-        print("holiwis-----------------------")
         try:
             beverages = BeverageManager.get_by_id_list(beverage_ids)
-            print("------------beverages------------")
-            print(beverages)
             ingredients = IngredientManager.get_by_id_list(ingredient_ids)
-            print("----- im here-------")
             price = cls.calculate_order_price(size.get('price'), ingredients, beverages)
             order_state = "Received"
-            print(order_state)
             order_with_price = {**current_order, 'total_price': price, "order_status": order_state}
-            print(order_state)
             created_order = cls.manager.create(order_with_price, ingredients, beverages), None
-            print("----------Created order----------")
-            print(created_order)
             order_info, _ = created_order
             order_id = order_info["_id"]  
             client_name = order_info["client_name"]  

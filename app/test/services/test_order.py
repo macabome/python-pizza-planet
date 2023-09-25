@@ -12,6 +12,7 @@ def test_create_order_service(create_order):
     pytest.assume(order['client_name'])
     pytest.assume(order['client_dni'])
     pytest.assume(order['client_address'])
+    pytest.assume(order['client_phone'])
     
 
 def test_get_order_by_id_service(client, create_order, order_uri):

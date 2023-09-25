@@ -77,7 +77,6 @@ class ReportController(BaseController):
         order = cls.find_top_costumers(report)
         ingredient = cls.find_top_ingredient(report)
         most_revenue = cls.get_most_revenue_month(report)
-        print(order)
         return order,ingredient, most_revenue, error 
 
 
