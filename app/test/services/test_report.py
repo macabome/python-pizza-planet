@@ -11,10 +11,6 @@ def test_create_order_service(create_order):
 
 def test_get_report(app, create_orders):
     client = app.test_client()
-    
-    # Realizar una solicitud GET a la ruta /report
     response = client.get('/report/')
-    
-    # Verificar que el código de respuesta sea 200 (éxito)
     assert response.status_code == 200
     
